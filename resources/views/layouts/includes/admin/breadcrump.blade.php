@@ -1,5 +1,5 @@
 {{-- verificar si hay un elemento vacio--}}
-@if (count($breadcrumbs))
+@if (is_countable($breadcrumbs) && count($breadcrumbs))
 <nav class="mb-2 block">
 
     <ol class="flex flex-wrap text-slate-700 text-sm">

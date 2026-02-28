@@ -8,31 +8,14 @@
       'active' => request()->routeIs('admin.dashboard'),
     ],  
     [
-      'header' => 'Administración',
+      'header' => 'Gestion',
 
     ],
      [
-      'name' => 'Tienda en linea',
-      'icon' => 'fa-solid fa-user-group',
-      'href' => route('admin.dashboard'),
-      'active' => request()->routeIs('admin.dashboard'),
-      'submenu' => [
-         [
-            'name' => 'Productos',
-            'href' => '#',
-            'active' => false,
-         ],
-         [
-            'name' => 'Categorias',
-            'href' => '#',
-            'active' => false,
-         ],
-         [
-            'name' => 'Pedidos',
-            'href' => '#',
-            'active' => false,
-         ]
-    ], 
+      'name' => 'Roles y Permisos',
+      'icon' => 'fa-solid fa-shield-halved',
+      'href' => route('admin.roles.index'),
+      'active' => request()->routeIs('admin.roles.*'), 
   ]
   ];
 
@@ -87,13 +70,14 @@
     {{-- LINK NORMAL --}}
     @else
 
-        <a href="{{$link['href']}}"
-           class="flex items-center px-2 py-2 hover:bg-gray-100 {{$link['active'] ? 'bg-gray-100' : ''}}">
+        <a
+           href="{{$link['href']}}"
+           class="flex items-center w-full o-2 text-base text-gray-900 "
+           class="flex items-center px-2 py-1.5 text-body rounded-base hover:nuestral-tertiary hover">
             
             <span class="w-6 h-6 inline-flex items-center justify-center text-gray-500">
-                <i class="{{$link['icon']}} w-5 h-5"></i>
+                <i class="{{$link['icon']}}"></i>
             </span>
-
             <span class="ms-3">{{$link['name']}}</span>
         </a>
 

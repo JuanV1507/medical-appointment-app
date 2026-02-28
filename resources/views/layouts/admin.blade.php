@@ -1,6 +1,6 @@
 @props([ 
-   'title' => config('app.name', 'Healthify'), //titulo por defecto
-   'breadcrumbs'=>[ ], //aray vacio por defecto
+   'title' => config('app.name', 'Laravel'), //titulo por defecto
+   'breadcrumbs'=>[], //aray vacio por defecto
 ])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -14,14 +14,20 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+      <!--
         <script src="https://kit.fontawesome.com/4bba036597.js" crossorigin="anonymous"></script>
+         -->
+         <!-- SweetAlert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <!-- WireUI -->
         <wireui:scripts />
+        @wireUiScripts
 
         <!-- Styles -->
         @livewireStyles
@@ -32,9 +38,15 @@
          @include('layouts.includes.admin.sidebar')
 
       <div class="p-4 sm:ml-64 mt-14">
-         <div class="mt-14">
+         <div class="mt-14 flex justify-between items-center w-full">
             
             @include('layouts.includes.admin.breadcrump')
+             @isset($action)
+                <div>
+                    {{$action}}
+                </div>
+               
+               @endisset
 
          </div>
 
@@ -44,6 +56,13 @@
 
 
         @stack('modals')
+      {{-- Verificar si hay una sesión de SweetAlert y mostrarla --}}
+       @if(session('swal'))
+          <script>
+            Swal.fire( @json(session('swal')));
+          </script>
+       @endif
+
         @livewireScripts
 
       <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js"></script>
