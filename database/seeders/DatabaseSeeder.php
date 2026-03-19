@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,14 +19,10 @@ class DatabaseSeeder extends Seeder
 
     // Llamar al seeder de roles
         $this->call(RoleSeeder::class);
+    // Llamar al seeder de usuarios
+        $this->call(UserSeeder::class);
 
         
         // Crea usuario de prueba cada que se ejecuten las migraciones
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@test.com',
-            'password' => bcrypt('12345678'),
-        ]);
     }
 }
