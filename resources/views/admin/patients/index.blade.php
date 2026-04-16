@@ -10,6 +10,6 @@
     ],  
 ]">
 
-@livewire('admin.datatable.patients-table')
+@livewire('admin.datatables.patient-table')
 
 </x-admin-layout>
