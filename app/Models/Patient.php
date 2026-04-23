@@ -8,16 +8,19 @@ class Patient extends Model
 {
 
 protected $fillable = [
-        'allergies',
-        'chronic_conditions',
-        'surgical_history',
-        'family_history',
-        'observations',
-        'emergency_contact_name',
-        'emergency_contact_phone',
-        'emergency_contact_relationship',
+    'blood_type_id',
+    'allergies',
+    'chronic_conditions',
+    'surgical_history',
+    'family_history',
+    'observations',
+    'emergency_contact_name',
+    'emergency_contact_phone',
+    'emergency_contact_relationship',
     ];
 
+    
+   
     //relacio uno a uno inversa
     public function user()
     {
