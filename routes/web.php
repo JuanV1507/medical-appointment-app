@@ -23,4 +23,18 @@ Route::middleware([
 
     Route::get('/users/create', [UserController::class,'create'])->name('users.create');
 
+    // Módulo de Citas
+    Route::get('/admin/appointments', \App\Livewire\Admin\AppointmentsManager::class)
+        ->name('admin.appointments');
+    
+    Route::get('/admin/appointments/{appointment}/consultation', \App\Livewire\Admin\ConsultationManager::class)
+        ->name('admin.appointments.consultation');
+
+    // Doctores y Horarios (Básicos para UI)
+    Route::get('/admin/doctors', \App\Livewire\Admin\DoctorsManager::class)
+        ->name('admin.doctors.index');
+        
+    Route::get('/admin/schedules', \App\Livewire\Admin\SchedulesManager::class)
+        ->name('admin.schedules.index');
+
 });

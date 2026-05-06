@@ -26,11 +26,34 @@
 
     [
         'name' => 'Pacientes',
-        'icon' => 'fa-solid fa-users-injured',
+        'icon' => 'fa-solid fa-hospital-user',
         'href' => route('admin.patients.index'),
         'active' => request()->routeIs('admin.patients.*'), 
     ],
-    
+    [
+        'name' => 'Doctores',
+        'icon' => 'fa-solid fa-user-doctor',
+        'href' => route('admin.doctors.index'),
+        'active' => request()->routeIs('admin.doctors.*'), 
+    ],
+    [
+        'name' => 'Citas médicas',
+        'icon' => 'fa-regular fa-calendar-check',
+        'href' => route('admin.appointments'),
+        'active' => request()->routeIs('admin.appointments*'), 
+    ],
+    [
+        'name' => 'Calendario',
+        'icon' => 'fa-regular fa-calendar',
+        'href' => route('admin.schedules.index'), // Usando schedules como calendario temporal
+        'active' => request()->routeIs('admin.schedules.*'), 
+    ],
+    [
+        'name' => 'Soporte',
+        'icon' => 'fa-solid fa-headset',
+        'href' => '#', // route('admin.support') si existe
+        'active' => false, 
+    ],
   ];
 
 @endphp
