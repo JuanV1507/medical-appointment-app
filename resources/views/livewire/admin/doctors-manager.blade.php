@@ -47,7 +47,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $doctor->specialty ?? 'N/A' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <button class="text-blue-600 hover:text-blue-900 bg-blue-100 p-2 rounded"><i class="fa fa-edit"></i></button>
-                                        <button class="text-green-600 hover:text-green-900 bg-green-100 p-2 rounded ml-2"><i class="fa fa-clock"></i></button>
+                                        <a href="{{ route('admin.doctors.schedules', $doctor->id) }}" class="text-green-600 hover:text-green-900 bg-green-100 p-2 rounded ml-2 inline-block"><i class="fa fa-clock"></i></a>
                                     </td>
                                 </tr>
                             @empty

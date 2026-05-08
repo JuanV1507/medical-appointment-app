@@ -34,7 +34,7 @@ Route::middleware([
     Route::get('/admin/doctors', \App\Livewire\Admin\DoctorsManager::class)
         ->name('admin.doctors.index');
         
-    Route::get('/admin/schedules', \App\Livewire\Admin\SchedulesManager::class)
-        ->name('admin.schedules.index');
+    Route::get('/admin/doctors/{doctor}/schedules', \App\Livewire\Admin\SchedulesManager::class)
+        ->name('admin.doctors.schedules');
 
 });

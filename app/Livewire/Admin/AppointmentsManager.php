@@ -11,22 +11,39 @@ class AppointmentsManager extends Component
 {
     public $isCreating = false;
 
+    // Search fields
+    public $searchDate;
+    public $searchStartTime = '08:00';
+    public $searchEndTime = '18:00';
+    public $searchSpecialty;
+    public $availableDoctors = [];
+    public $specialties = [];
+
+    // Selected Appointment Info
+    public $selectedDoctorId;
+    public $selectedDoctorName;
+    public $selectedDate;
+    public $selectedStartTime;
+    public $selectedEndTime;
+
     // Form fields
     public $patient_id;
-    public $doctor_id;
-    public $date;
-    public $start_time;
-    public $end_time;
     public $reason;
 
     protected $rules = [
         'patient_id' => 'required|exists:patients,id',
-        'doctor_id' => 'required|exists:doctors,id',
-        'date' => 'required|date|after_or_equal:today',
-        'start_time' => 'required|date_format:H:i',
-        'end_time' => 'required|date_format:H:i|after:start_time',
-        'reason' => 'nullable|string',
+        'selectedDoctorId' => 'required|exists:doctors,id',
+        'selectedDate' => 'required|date|after_or_equal:today',
+        'selectedStartTime' => 'required|date_format:H:i',
+        'selectedEndTime' => 'required|date_format:H:i|after:selectedStartTime',
+        'reason' => 'required|string',
     ];
+
+    public function mount()
+    {
+        $this->searchDate = now()->addDay()->format('Y-m-d');
+        $this->specialties = Doctor::select('specialty')->distinct()->pluck('specialty')->filter()->toArray();
+    }
 
     public function create()
     {
@@ -37,6 +54,50 @@ class AppointmentsManager extends Component
     public function cancel()
     {
         $this->isCreating = false;
+        $this->availableDoctors = [];
+    }
+
+    public function searchAvailability()
+    {
+        $this->validate([
+            'searchDate' => 'required|date|after_or_equal:today',
+            'searchStartTime' => 'required|date_format:H:i',
+            'searchEndTime' => 'required|date_format:H:i|after:searchStartTime',
+        ]);
+
+        $query = Doctor::with('user');
+        
+        if ($this->searchSpecialty) {
+            $query->where('specialty', $this->searchSpecialty);
+        }
+
+        $doctors = $query->get();
+
+        // Para simular disponibilidad en el demo, simplemente mostramos a los doctores con slots generados.
+        // En un caso real, aquí cruzaríamos con las citas existentes.
+        
+        $results = [];
+        foreach ($doctors as $doctor) {
+            $results[] = [
+                'doctor' => $doctor,
+                'slots' => [
+                    $this->searchStartTime,
+                    \Carbon\Carbon::parse($this->searchStartTime)->addHours(1)->format('H:i'),
+                    \Carbon\Carbon::parse($this->searchStartTime)->addHours(2)->format('H:i'),
+                ]
+            ];
+        }
+
+        $this->availableDoctors = collect($results);
+    }
+
+    public function selectTimeSlot($doctorId, $doctorName, $time)
+    {
+        $this->selectedDoctorId = $doctorId;
+        $this->selectedDoctorName = $doctorName;
+        $this->selectedDate = $this->searchDate;
+        $this->selectedStartTime = $time;
+        $this->selectedEndTime = \Carbon\Carbon::parse($time)->addMinutes(15)->format('H:i');
     }
 
     public function save()
@@ -45,10 +106,10 @@ class AppointmentsManager extends Component
 
         Appointment::create([
             'patient_id' => $this->patient_id,
-            'doctor_id' => $this->doctor_id,
-            'date' => $this->date,
-            'start_time' => $this->start_time,
-            'end_time' => $this->end_time,
+            'doctor_id' => $this->selectedDoctorId,
+            'date' => $this->selectedDate,
+            'start_time' => $this->selectedStartTime,
+            'end_time' => $this->selectedEndTime,
             'duration' => 15,
             'reason' => $this->reason,
             'status' => 1,
@@ -63,23 +124,23 @@ class AppointmentsManager extends Component
     private function resetFields()
     {
         $this->patient_id = '';
-        $this->doctor_id = '';
-        $this->date = '';
-        $this->start_time = '';
-        $this->end_time = '';
+        $this->selectedDoctorId = null;
+        $this->selectedDoctorName = null;
+        $this->selectedDate = null;
+        $this->selectedStartTime = null;
+        $this->selectedEndTime = null;
         $this->reason = '';
+        $this->availableDoctors = [];
     }
 
     public function render()
     {
         $appointments = Appointment::with(['patient.user', 'doctor.user'])->orderBy('date')->orderBy('start_time')->get();
         $patients = Patient::with('user')->get();
-        $doctors = Doctor::with('user')->get();
 
         return view('livewire.admin.appointments-manager', [
             'appointments' => $appointments,
             'patients' => $patients,
-            'doctors' => $doctors,
-        ])->layout('layouts.admin'); // Using the correct admin layout
+        ])->layout('layouts.admin');
     }
 }

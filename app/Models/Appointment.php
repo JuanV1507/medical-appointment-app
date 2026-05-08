@@ -15,6 +15,9 @@ class Appointment extends Model
         'duration',
         'reason',
         'status',
+        'diagnosis',
+        'treatment',
+        'notes',
     ];
 
     public function patient()

@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    'whatsapp' => [
+        'token' => env('WHATSAPP_TOKEN'),
+        'instance_id' => env('WHATSAPP_INSTANCE_ID'),
+    ],
+
+    'mailtrap' => [
+        'token' => env('MAILTRAP_API_TOKEN'),
+    ],
+
 ];

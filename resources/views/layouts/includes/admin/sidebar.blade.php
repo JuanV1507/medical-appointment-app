@@ -45,8 +45,8 @@
     [
         'name' => 'Calendario',
         'icon' => 'fa-regular fa-calendar',
-        'href' => route('admin.schedules.index'), // Usando schedules como calendario temporal
-        'active' => request()->routeIs('admin.schedules.*'), 
+        'href' => '#', // Usando schedules como calendario temporal
+        'active' => request()->routeIs('admin.schedules.*') || request()->routeIs('admin.doctors.schedules'), 
     ],
     [
         'name' => 'Soporte',

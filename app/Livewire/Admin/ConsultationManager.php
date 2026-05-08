@@ -10,6 +10,7 @@ class ConsultationManager extends Component
     public Appointment $appointment;
     public $activeTab = 'consulta'; // 'consulta' or 'receta'
     public $showHistoryModal = false;
+    public $showPastConsultationsModal = false;
 
     // Consulta fields
     public $diagnosis = '';
@@ -61,14 +62,14 @@ class ConsultationManager extends Component
         $this->validate([
             'diagnosis' => 'required|string',
             'treatment' => 'required|string',
+            'notes' => 'required|string',
         ]);
 
         // Aquí iría la lógica para guardar en base de datos.
-        // Como no nos piden crear tablas nuevas, actualizamos el estatus de la cita.
         $this->appointment->status = 2; // Atendida
-        
-        // Podríamos guardar el JSON en 'reason' o crear campos, pero vamos a dejarlo simulado
-        // $this->appointment->reason = json_encode([...]); 
+        $this->appointment->diagnosis = $this->diagnosis;
+        $this->appointment->treatment = $this->treatment;
+        $this->appointment->notes = $this->notes;
         
         $this->appointment->save();
 
